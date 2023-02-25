@@ -1,4 +1,7 @@
+using AutoMapper;
+using Common.DTOs;
 using Microsoft.EntityFrameworkCore;
+using VOD.Membership.Database.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +24,10 @@ builder.Services.AddDbContext<MSContext>(
 options => options.UseSqlServer(
 builder.Configuration.GetConnectionString("MSConnection")));
 
+ConfigureAutomapper(builder.Services);
+
+RegisterService(builder.Services);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -38,3 +45,25 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+void ConfigureAutomapper(IServiceCollection services)
+{
+	var config = new MapperConfiguration(cfg =>
+	{
+		cfg.CreateMap<Director, DirectorDTO>().ReverseMap();
+		cfg.CreateMap<Genre, GenreDTO>().ReverseMap();
+		cfg.CreateMap<Film, FilmDTO>().ReverseMap();
+		cfg.CreateMap<SimilarFilm, SimilarFilmDTO>().ReverseMap();
+		cfg.CreateMap<FilmGenre, FilmGenresDTO>().ReverseMap();
+
+	});
+
+	var mapper = config.CreateMapper();
+
+	services.AddSingleton(mapper);
+}
+
+void RegisterService(IServiceCollection services)
+{
+	services.AddScoped<IDbService, DbService>();
+}

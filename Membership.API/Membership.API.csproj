@@ -20,8 +20,4 @@
     <ProjectReference Include="..\Membership.Database\Membership.Database.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>

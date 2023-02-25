@@ -40,5 +40,7 @@ public class MSContext : DbContext
 			.UsingEntity<FilmGenre>()
 			.ToTable("FilmGenres");
 		});
+
 	}
+
 }
