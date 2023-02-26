@@ -22,7 +22,7 @@ namespace Membership.Database.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Membership.Database.Entities.Director", b =>
+            modelBuilder.Entity("Membership.Database.Entities.Film", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -37,7 +37,7 @@ namespace Membership.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Directors");
+                    b.ToTable("Films");
                 });
 
             modelBuilder.Entity("Membership.Database.Entities.Film", b =>
@@ -52,7 +52,7 @@ namespace Membership.Database.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("DirectorId")
+                    b.Property<int>("FilmId")
                         .HasColumnType("int");
 
                     b.Property<string>("FilmUrl")
@@ -69,7 +69,7 @@ namespace Membership.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DirectorId");
+                    b.HasIndex("FilmId");
 
                     b.ToTable("Films");
                 });
@@ -124,13 +124,13 @@ namespace Membership.Database.Migrations
 
             modelBuilder.Entity("Membership.Database.Entities.Film", b =>
                 {
-                    b.HasOne("Membership.Database.Entities.Director", "Director")
+                    b.HasOne("Membership.Database.Entities.Film", "Film")
                         .WithMany()
-                        .HasForeignKey("DirectorId")
+                        .HasForeignKey("FilmId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Director");
+                    b.Navigation("Film");
                 });
 
             modelBuilder.Entity("Membership.Database.Entities.FilmGenre", b =>

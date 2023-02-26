@@ -23,39 +23,39 @@ public static class MSContextExtensions
 
 		try
 		{
-			#region Seed Directors
+			#region Seed Films
 			////Spiderman
-			//await db.AddAsync<Director, DirectorDTO>(new DirectorDTO
+			//await db.AddAsync<Film, FilmDTO>(new FilmDTO
 			//{
 			//	Name = "Sam Raimi"
 			//});
 
 			////Avatar
-			//await db.AddAsync<Director, DirectorDTO>(new DirectorDTO
+			//await db.AddAsync<Film, FilmDTO>(new FilmDTO
 			//{
 			//	Name = "James Cameron"
 			//});
 
 			////Batman
-			//await db.AddAsync<Director, DirectorDTO>(new DirectorDTO
+			//await db.AddAsync<Film, FilmDTO>(new FilmDTO
 			//{
 			//	Name = "Matt Reeves"
 			//});
 
 			////Ironman
-			//await db.AddAsync<Director, DirectorDTO>(new DirectorDTO
+			//await db.AddAsync<Film, FilmDTO>(new FilmDTO
 			//{
 			//	Name = "Jon Favreau"
 			//});
 
 			////Ex Machina
-			//await db.AddAsync<Director, DirectorDTO>(new DirectorDTO
+			//await db.AddAsync<Film, FilmDTO>(new FilmDTO
 			//{
 			//	Name = "Alex Garland"
 			//});
 
 			////Matrix
-			//await db.AddAsync<Director, DirectorDTO>(new DirectorDTO
+			//await db.AddAsync<Film, FilmDTO>(new FilmDTO
 			//{
 			//	Name = "Wachowski"
 			//});
@@ -86,7 +86,7 @@ public static class MSContextExtensions
 
 			//		Title = "Avatar",
 			//		Released = new DateTime(2009,01,01),
-			//		DirectorId = 2,
+			//		FilmId = 2,
 			//		Description = description.Substring(0, 20),
 			//		FilmUrl = "<iframe width=\"1280\" height=\"720\" src=\"https://www.youtube.com/embed/5PSNL1qE6VY\" title=\"Avatar | Official Trailer (HD) | 20th Century FOX\" " +
 			//		"frameborder=\"0\" " +
@@ -100,7 +100,7 @@ public static class MSContextExtensions
 
 			//		Title = "Spider Man",
 			//		Released = new DateTime(2002, 01, 01),
-			//		DirectorId = 1,
+			//		FilmId = 1,
 			//		Description = description.Substring(21, 20),
 			//		FilmUrl = "<iframe width=\"1280\" height=\"720\" src=\"https://www.youtube.com/embed/t06RUxPbp_c\" title=\"SPIDER-MAN [2002] – " +
 			//		"Official Trailer (HD)\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; " +
@@ -113,7 +113,7 @@ public static class MSContextExtensions
 
 			//		Title = "Iron Man",
 			//		Released = new DateTime(2008, 01, 01),
-			//		DirectorId = 4,
+			//		FilmId = 4,
 			//		Description = description.Substring(42, 20),
 			//		FilmUrl = "<iframe width=\"1280\" height=\"720\" src=\"https://www.youtube.com/embed/8ugaeA-nMTc\" title=\"Iron Man (2008) Trailer #1 | Movieclips Classic Trailers\" " +
 			//		"frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>"
@@ -125,7 +125,7 @@ public static class MSContextExtensions
 
 			//		Title = "Matrix",
 			//		Released = new DateTime(1999, 01, 01),
-			//		DirectorId = 6,
+			//		FilmId = 6,
 			//		Description = description.Substring(63, 20),
 			//		FilmUrl = "<iframe width=\"1280\" height=\"720\" src=\"https://www.youtube.com/embed/m8e-FF8MsqU\" title=\"Matrix Trailer HD (1999)\" frameborder=\"0\" " +
 			//		"allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>"
@@ -137,7 +137,7 @@ public static class MSContextExtensions
 
 			//		Title = "Ex Machina",
 			//		Released = new DateTime(2015, 01, 01),
-			//		DirectorId = 5,
+			//		FilmId = 5,
 			//		Description = description.Substring(11, 20),
 			//		FilmUrl = "<iframe width=\"1280\" height=\"720\" src=\"https://www.youtube.com/embed/sNExF5WYMaA\" title=\"Ex Machina - Official International Trailer 1 (Universal Pictures) HD\" frameborder=\"0\" " +
 			//		"allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>"
@@ -149,7 +149,7 @@ public static class MSContextExtensions
 
 			//		Title = "Batman",
 			//		Released = new DateTime(2022, 01, 01),
-			//		DirectorId = 3,
+			//		FilmId = 3,
 			//		Description = description.Substring(31, 20),
 			//		FilmUrl = "<iframe width=\"1280\" height=\"720\" src=\"https://www.youtube.com/embed/mqqft2x_Aa4\" title=\"THE BATMAN – Main Trailer\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" " +
 			//		"allowfullscreen></iframe>"

@@ -15,6 +15,11 @@ builder.Services.AddCors(policy => {
 	);
 });
 
+//builder.Services.AddControllersWithViews()
+//	.AddNewtonsoftJson(options =>
+//	options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+//);
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -27,6 +32,8 @@ builder.Configuration.GetConnectionString("MSConnection")));
 ConfigureAutomapper(builder.Services);
 
 RegisterService(builder.Services);
+
+
 
 var app = builder.Build();
 
@@ -51,10 +58,30 @@ void ConfigureAutomapper(IServiceCollection services)
 	var config = new MapperConfiguration(cfg =>
 	{
 		cfg.CreateMap<Director, DirectorDTO>().ReverseMap();
+		cfg.CreateMap<CreateDirectorDTO, Director>();
+
 		cfg.CreateMap<Genre, GenreDTO>().ReverseMap();
+		cfg.CreateMap<CreateGenreDTO, Genre>()
+		.ForMember(dest => dest.Films, src => src.Ignore());
+
+
 		cfg.CreateMap<Film, FilmDTO>().ReverseMap();
+		
+
+		cfg.CreateMap<CreateFilmDTO, Film>()
+		.ForMember(dest => dest.SimilarFilms, src => src.Ignore())
+		.ForMember(dest => dest.Director, src => src.Ignore())
+		.ForMember(dest => dest.Genres, src => src.Ignore());
+
 		cfg.CreateMap<SimilarFilm, SimilarFilmDTO>().ReverseMap();
+		cfg.CreateMap<BaseSimilarFilmDTO, SimilarFilm>();
+		//.ForMember(dest => dest.Film, scr => scr.Ignore())
+		//.ForMember(dest => dest.Similar, scr => scr.Ignore());
+
 		cfg.CreateMap<FilmGenre, FilmGenresDTO>().ReverseMap();
+		cfg.CreateMap<BaseFilmGenresDTO, FilmGenre>()
+		.ForMember(dest => dest.Genre, src => src.Ignore())
+		.ForMember(dest => dest.Film, src => src.Ignore());
 
 	});
 
