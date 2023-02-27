@@ -1,0 +1,44 @@
+﻿@inject IAdminService AdminService
+
+@if (!string.IsNullOrEmpty(Alert))
+{
+		<div class="alert alert-danger alert-dismissible fade show w-25" role="alert">
+			<strong>couldn't create director.</strong>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="CloseAlert" aria-label="Close"></button>
+		</div>
+}
+
+<div class="d-flex me-1">
+	<a class="btn btn-outline-secondary me-1" href="/" role="button">Home</a>
+	<button type="button" class="btn btn-outline-primary me-1" @onclick="()=>ChangePageType(PageType.Index)">Index</button>
+	<button type="button" class="btn btn-outline-success" @onclick="()=>ChangePageType(PageType.Create)">Create</button>
+</div>
+
+<h3>@Navigation</h3>
+
+@code {
+	[Parameter] public List<DirectorDTO> Model { get; set; } = new();
+
+	public string Alert = string.Empty;
+
+	[Parameter] public string Navigation { get; set; } = PageType.Index;
+
+	protected async override Task OnInitializedAsync()
+	{
+		Model = await AdminService.GetAsync<DirectorDTO>($"directors");
+		//var test = await AdminService.SingleAsync<GenreDTO>($"directors/2");
+		//await AdminService.DeleteAsync<EditDirectorDTO>("directors", 8);
+
+		Alert = string.Empty;
+	}
+
+	void ChangePageType(string pageType)
+	{
+		Navigation = pageType;
+	}
+
+	void CloseAlert()
+	{
+		Alert = string.Empty;
+	}
+}
