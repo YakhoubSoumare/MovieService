@@ -6,7 +6,6 @@ using VOD.Membership.Database.Services;
 
 namespace Membership.API.Controllers;
 
-[Route("api/[controller]")]
 [ApiController]
 public class SimilarFilmsController : ControllerBase
 {
@@ -17,15 +16,17 @@ public class SimilarFilmsController : ControllerBase
 		_db = db;
 	}
 
-	[HttpPost]
-	public async Task<IResult> Post([FromBody] BaseSimilarFilmDTO dto)
-	{
-		return await _db.HTTPPAddRTAsync<SimilarFilm, BaseSimilarFilmDTO>(dto);
-	}
+	//[Route("api/SimilarFilms")]
+	//[HttpPost]
+	//public async Task<IResult> Post([FromBody] BaseSimilarFilmDTO dto)
+	//{
+	//	return await _db.HTTPPAddRTAsync<SimilarFilm, BaseSimilarFilmDTO>(dto);
+	//}
 
-	[HttpDelete("{id}")]
-	public async Task<IResult> Delete([FromBody] BaseSimilarFilmDTO dto)
-	{
-		return await _db.HTTPDeleteRTAsync<SimilarFilm, BaseSimilarFilmDTO>(dto);
-	}
+	//[Route("api/films/{filmId}/similar/{similarFilmId}")]
+	//[HttpDelete]
+	//public async Task<IResult> Delete(int filmId, int similarFilmId)
+	//{
+	//	return await _db.HTTPDeleteRTAsync<SimilarFilm, BaseSimilarFilmDTO>(dto);
+	//}
 }

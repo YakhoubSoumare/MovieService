@@ -7,8 +7,8 @@ public class SimilarFilmDTO
 	public int SimilarFilmId { get; set; }
 
 	//To avoid Main film being loaded as similar (Circular references), configuration in OnModelCreating: OnDelete(DeleteBehavior.ClientSetNull);
-	public virtual FilmDTO? Film { get; set; }
-	public virtual FilmDTO? Similar { get; set; }
+	public virtual BaseFilmDTO? Film { get; set; }
+	public virtual BaseFilmDTO? Similar { get; set; }
 }
 
 public class BaseSimilarFilmDTO

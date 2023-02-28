@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using AutoMapper;
 using Common.DTOs;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,9 @@ builder.Services.AddCors(policy => {
 //	.AddNewtonsoftJson(options =>
 //	options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 //);
+
+builder.Services.AddControllers().AddJsonOptions(x =>
+				x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -63,16 +67,18 @@ void ConfigureAutomapper(IServiceCollection services)
 		cfg.CreateMap<Genre, GenreDTO>().ReverseMap();
 		cfg.CreateMap<CreateGenreDTO, Genre>()
 		.ForMember(dest => dest.Films, src => src.Ignore());
-
+		cfg.CreateMap<Genre, BaseGenreDTO>();
+		
 
 		cfg.CreateMap<Film, FilmDTO>()
-		.ForMember(dest => dest.SimilarFilms, src => src.Ignore())
-		.ForMember(dest => dest.Genres, src => src.Ignore())
+		//.ForMember(dest => dest.SimilarFilms, src => src.Ignore())
+		//.ForMember(dest => dest.Genres, src => src.Ignore())
 		.ReverseMap()
 		.ForMember(dest => dest.SimilarFilms, src => src.Ignore())
 		.ForMember(dest => dest.Genres, src => src.Ignore())
 		.ForMember(dest => dest.Director, src => src.Ignore());
-		
+
+		cfg.CreateMap<Film, BaseFilmDTO>();
 
 		cfg.CreateMap<CreateFilmDTO, Film>()
 		.ForMember(dest => dest.SimilarFilms, src => src.Ignore())

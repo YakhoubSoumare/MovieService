@@ -10,7 +10,7 @@ public class FilmDTO
 	public string? Description { get; set; }
 	public string? FilmUrl { get; set; }
 
-	public List<GenreDTO>? Genres { get; set; }
+	public List<BaseGenreDTO>? Genres { get; set; }
 	public List<SimilarFilmDTO>? SimilarFilms { get; set; }
 }
 
@@ -27,4 +27,10 @@ public class EditFilmDTO : CreateFilmDTO
 {
 	public int Id { get; set; }
 	
+}
+
+public class BaseFilmDTO : CreateFilmDTO
+{
+	public int Id { get; set; }
+
 }
