@@ -24,6 +24,7 @@ namespace Membership.API.Controllers
 			try
 			{
 				_db.Include<Film>();
+				_db.Include<FilmGenre>();
 				films = await _db.GetAsync<Film, FilmDTO>();
 				if (films is null)
 				{

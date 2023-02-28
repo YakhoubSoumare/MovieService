@@ -77,7 +77,7 @@ public class DbService : IDbService
 	}
 
 	public void Include<TEntity>()
-	where TEntity : class, IEntity
+	where TEntity : class
 	{
 		var propertyNames = _db.Model.FindEntityType(typeof(TEntity))?.GetNavigations().Select(e => e.Name);
 

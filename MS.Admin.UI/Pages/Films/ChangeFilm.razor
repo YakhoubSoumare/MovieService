@@ -1,0 +1,92 @@
+﻿@inject IAdminService AdminService
+
+<div class="d-flex w-25 m-xl-auto">
+	<EditForm Model="Model" OnValidSubmit="OnFormSubmit">
+		<DataAnnotationsValidator />
+		<h4>@Page Film</h4>
+		<div class="mb-3">
+			@if (Page.Equals(PageType.Delete))
+			{
+				<div class="mb-2">
+					<input type="text" id="title" class="form-control" disabled placeholder="@Model.Title" @bind-value="Model.Title">
+				</div>
+
+			}
+			else if (Page.Equals(PageType.Create) || Page.Equals(PageType.Edit))
+			{
+				<div class="mb-2">
+					<input type="text" id="title" class="form-control" placeholder="Title" @bind-value="Model.Title">
+					<ValidationMessage For="@(() => Model.Title)" />
+				</div>
+
+				<div class="mb-2">
+					<input type="text" id="description" class="form-control" placeholder="Description" @bind-value="Model.Description">
+					<ValidationMessage For="@(() => Model.Description)" />
+				</div>
+
+				<div class="mb-2">
+					<input type="text" id="FilmUrl" class="form-control" placeholder="Film Url" @bind-value="Model.FilmUrl">
+					<ValidationMessage For="@(() => Model.FilmUrl)" />
+				</div>
+
+				<div class="mb-2">
+					<input type="date" id="released" class="form-control" placeholder="Release Date" @bind-value="Model.Released">
+					<ValidationMessage For="@(() => Model.Released)" />
+				</div>
+
+				<InputSelect @bind-Value="Model.DirectorId" class="form-control mb-3">
+                <option value=0>Director ...</option>
+                @foreach (var instructor in Directors)
+                {
+                    <option value="@instructor.Id">@instructor.Name</option>
+                }
+            </InputSelect>
+				<ValidationMessage For="@(() => Model.DirectorId)" />
+			}
+			<div class="d-flex justify-content-center">
+				<input class="btn btn-@(Page.Equals(PageType.Delete) ? "danger" : "primary")" type="submit" value="@Page">
+			</div>
+
+		</div>
+
+	</EditForm>
+</div>
+
+@code {
+	[Parameter] public FilmDTO Model { get; set; } = new();
+	[Parameter] public string Page { get; set; } = string.Empty;
+	[Parameter] public EventCallback<string> OnChange { get; set; }
+	List<DirectorDTO> Directors = new();
+	List<GenreDTO> Genres = new();
+	List<SimilarFilmDTO> SimilarFilms = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		Directors = await AdminService.GetAsync<DirectorDTO>($"directors");
+	}
+
+	async Task OnFormSubmit()
+	{
+		try
+		{
+			if (Page.Equals(PageType.Create))
+			{
+				await AdminService.CreateAsync<FilmDTO>($"films", Model);
+			}
+			else if (Page.Equals(PageType.Edit))
+			{
+				await AdminService.EditAsync<FilmDTO>($"films", Model.Id, Model);
+			}
+			else if (Page.Equals(PageType.Delete))
+			{
+				await AdminService.DeleteAsync<FilmDTO>($"films", Model.Id);
+			}
+
+			await OnChange.InvokeAsync("");
+		}
+		catch
+		{
+			await OnChange.InvokeAsync("could not create/edit/delete film");
+		}
+	}
+}

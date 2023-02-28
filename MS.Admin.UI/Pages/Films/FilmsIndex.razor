@@ -1,0 +1,36 @@
+﻿<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Released</th>
+            <th>Director</th>
+            <th>Description</th>
+            <th>FilmUrl</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@(item.Released)</td>
+                <td>@(string.IsNullOrEmpty(item.Director.Name) ? "None" : item.Director.Name)</td>
+                <td>@(string.IsNullOrEmpty(item.Description) ? "None" : item.Description.Truncate(20))</td>
+                <td>@(string.IsNullOrEmpty(item.FilmUrl) ? "None" : item.FilmUrl.Truncate(20))</td>
+                <td>
+                    <div class="d-flex justify-content-end me-1">
+                        <button type="button" class="btn btn-outline-primary me-1" @onclick = "() => OnClick.InvokeAsync(new ClickModel(PageType.Edit, item.Id))">Edit</button>
+                        <button type="button" class="btn btn-outline-danger" @onclick = "() => OnClick.InvokeAsync(new ClickModel(PageType.Delete, item.Id))">Delete</button>
+                    </div>
+                </td>
+            </tr>
+        }
+ 
+    </tbody>
+</table>
+
+@code {
+	[Parameter] public List<FilmDTO> Model { get; set; } = new();
+	[Parameter] public EventCallback<ClickModel> OnClick { get; set; }
+}

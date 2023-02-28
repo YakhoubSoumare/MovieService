@@ -65,7 +65,13 @@ void ConfigureAutomapper(IServiceCollection services)
 		.ForMember(dest => dest.Films, src => src.Ignore());
 
 
-		cfg.CreateMap<Film, FilmDTO>().ReverseMap();
+		cfg.CreateMap<Film, FilmDTO>()
+		.ForMember(dest => dest.SimilarFilms, src => src.Ignore())
+		.ForMember(dest => dest.Genres, src => src.Ignore())
+		.ReverseMap()
+		.ForMember(dest => dest.SimilarFilms, src => src.Ignore())
+		.ForMember(dest => dest.Genres, src => src.Ignore())
+		.ForMember(dest => dest.Director, src => src.Ignore());
 		
 
 		cfg.CreateMap<CreateFilmDTO, Film>()
@@ -78,10 +84,14 @@ void ConfigureAutomapper(IServiceCollection services)
 		//.ForMember(dest => dest.Film, scr => scr.Ignore())
 		//.ForMember(dest => dest.Similar, scr => scr.Ignore());
 
-		cfg.CreateMap<FilmGenre, FilmGenresDTO>().ReverseMap();
+		cfg.CreateMap<FilmGenre, FilmGenresDTO>()
+		.ForMember(dest => dest.Film, scr => scr.Ignore())
+		.ReverseMap()
+		.ForMember(dest => dest.Film, scr => scr.Ignore());
+
 		cfg.CreateMap<BaseFilmGenresDTO, FilmGenre>()
-		.ForMember(dest => dest.Genre, src => src.Ignore())
-		.ForMember(dest => dest.Film, src => src.Ignore());
+		.ForMember(dest => dest.Genre, src => src.Ignore());
+		//.ForMember(dest => dest.Film, src => src.Ignore());
 
 	});
 

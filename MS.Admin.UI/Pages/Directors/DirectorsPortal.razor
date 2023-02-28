@@ -8,13 +8,22 @@
 		</div>
 }
 
+@if (Navigation.Equals(PageType.Create))
+{
+	<ChangeDirector Page="@Navigation" OnChange="OnChange"></ChangeDirector>
+}
+else if (Navigation.Equals(PageType.Edit) || (Navigation.Equals(PageType.Delete)))
+{
+	<ChangeDirector Page="@Navigation" Model="@Director" OnChange="OnChange"></ChangeDirector>
+}
+
 <div class="d-flex me-1">
 	<a class="btn btn-outline-secondary me-1" href="/" role="button">Home</a>
 	<button type="button" class="btn btn-outline-primary me-1" @onclick="()=>ChangePageType(PageType.Index)">Index</button>
 	<button type="button" class="btn btn-outline-success" @onclick="()=>ChangePageType(PageType.Create)">Create</button>
 </div>
 
-<h3>@Navigation</h3>
+<DirectorsIndex OnClick="OnClick" Model="Model"></DirectorsIndex>
 
 @code {
 	[Parameter] public List<DirectorDTO> Model { get; set; } = new();
@@ -22,6 +31,8 @@
 	public string Alert = string.Empty;
 
 	[Parameter] public string Navigation { get; set; } = PageType.Index;
+
+	public DirectorDTO Director = new();
 
 	protected async override Task OnInitializedAsync()
 	{
@@ -40,5 +51,28 @@
 	void CloseAlert()
 	{
 		Alert = string.Empty;
+	}
+
+	async Task OnClick(ClickModel model)
+	{
+		if (model.PageType.Equals(PageType.Edit) || model.PageType.Equals(PageType.Delete))
+		{
+			Director = await AdminService.SingleAsync<DirectorDTO>($"directors/{model.Id}");
+		}
+		ChangePageType(model.PageType);
+	}
+
+	async Task OnChange(string alert)
+	{
+		try
+		{
+			Alert = alert;
+			Model = await AdminService.GetAsync<DirectorDTO>($"directors");
+			ChangePageType(PageType.Index);
+		}
+		catch
+		{
+			Alert = $"Couldn't create/edit/delete the director";
+		}
 	}
 }

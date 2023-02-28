@@ -11,7 +11,7 @@ public interface IDbService
 		where TEntity : class, IEntity
 		where TDto : class;
 	string GetURI<TEntity>(TEntity entity) where TEntity : class, IEntity;
-	void Include<TEntity>() where TEntity : class, IEntity;
+	void Include<TEntity>() where TEntity : class;
 	Task<TReferenceEntity> RTAddAsync<TReferenceEntity, TDto>(TDto dto)
 		where TReferenceEntity : class, IReferenceEntity
 		where TDto : class;
