@@ -128,4 +128,12 @@ public class DbService : IDbService
 		await _db.AddAsync(entity);
 		return entity;
 	}
+
+	public async Task<List<TDto>> RTGetAsync<TEntity, TDto>()
+		where TEntity : class, IReferenceEntity
+		where TDto : class
+	{
+		var entities = await _db.Set<TEntity>().ToListAsync();
+		return _mapper.Map<List<TDto>>(entities);
+	}
 }

@@ -6,7 +6,6 @@ using VOD.Membership.Database.Services;
 
 namespace Membership.API.Controllers
 {
-	[Route("api/[controller]")]
 	[ApiController]
 	public class FilmGenresController : ControllerBase
 	{
@@ -17,6 +16,27 @@ namespace Membership.API.Controllers
 			_db = db;
 		}
 
+		[Route("api/filmgenres")]
+		[HttpGet]
+		public async Task<IResult> Get()
+		{
+			var filmGenres = new object();
+			try
+			{
+				filmGenres = await _db.RTGetAsync<FilmGenre, BaseFilmGenresDTO>();
+				if (filmGenres is null)
+				{
+					return Results.BadRequest();
+				}
+			}
+			catch
+			{
+				return Results.NotFound();
+			}
+			return Results.Ok(filmGenres);
+		}
+
+		[Route("api/filmgenres")]
 		[HttpPost]
 		public async Task<IResult> Post([FromBody] BaseFilmGenresDTO dto)
 		{

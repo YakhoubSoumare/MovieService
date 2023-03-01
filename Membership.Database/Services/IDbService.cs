@@ -18,6 +18,9 @@ public interface IDbService
 	bool RTDeleteAsync<TReferenceEntity, TDto>(TDto dto)
 		where TReferenceEntity : class, IReferenceEntity
 		where TDto : class;
+	Task<List<TDto>> RTGetAsync<TEntity, TDto>()
+		where TEntity : class, IReferenceEntity
+		where TDto : class;
 	Task<bool> SaveChangesAsync();
 	Task<TDto> SingleAsync<TEntity, TDto>(Expression<Func<TEntity, bool>> expression)
 		where TEntity : class, IEntity

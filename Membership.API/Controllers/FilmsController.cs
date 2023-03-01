@@ -26,6 +26,7 @@ namespace Membership.API.Controllers
 				_db.Include<Film>();
 				_db.Include<FilmGenre>();
 				films = await _db.GetAsync<Film, FilmDTO>();
+				//films = await _db.GetAsync<Film, BaseFilmDTO>();
 				if (films is null)
 				{
 					return Results.BadRequest();
@@ -46,6 +47,7 @@ namespace Membership.API.Controllers
 			try
 			{
 				_db.Include<Film>();
+				_db.Include<FilmGenre>();
 				film = await _db.SingleAsync<Film, FilmDTO>(c => c.Id.Equals(id));
 				if (film is null) { return Results.NotFound(); }
 			}

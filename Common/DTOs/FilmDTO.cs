@@ -11,7 +11,7 @@ public class FilmDTO
 	public string? FilmUrl { get; set; }
 
 	public List<BaseGenreDTO>? Genres { get; set; }
-	public List<SimilarFilmDTO>? SimilarFilms { get; set; }
+	public List<BaseSimilarFilmDTO>? SimilarFilms { get; set; }
 }
 
 public class CreateFilmDTO

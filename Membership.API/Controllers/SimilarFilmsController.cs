@@ -16,6 +16,26 @@ public class SimilarFilmsController : ControllerBase
 		_db = db;
 	}
 
+	[Route("api/SimilarFilms")]
+	[HttpGet]
+	public async Task<IResult> Get()
+	{
+		var similarFilms = new object();
+		try
+		{
+			similarFilms = await _db.RTGetAsync<SimilarFilm, BaseSimilarFilmDTO>();
+			if (similarFilms is null)
+			{
+				return Results.BadRequest();
+			}
+		}
+		catch
+		{
+			return Results.NotFound();
+		}
+		return Results.Ok(similarFilms);
+	}
+
 	//[Route("api/SimilarFilms")]
 	//[HttpPost]
 	//public async Task<IResult> Post([FromBody] BaseSimilarFilmDTO dto)

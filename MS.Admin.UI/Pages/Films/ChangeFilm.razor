@@ -1,7 +1,7 @@
 ﻿@inject IAdminService AdminService
 
 <div class="d-flex w-25 m-xl-auto">
-	<EditForm Model="Model" OnValidSubmit="OnFormSubmit">
+	<EditForm EditContext="EditContext" OnValidSubmit="OnFormSubmit">
 		<DataAnnotationsValidator />
 		<h4>@Page Film</h4>
 		<div class="mb-3">
@@ -34,6 +34,13 @@
 					<ValidationMessage For="@(() => Model.Released)" />
 				</div>
 
+				<InputSelect @bind-Value="SelectedGenres" class="w-100 mb-3">
+					@foreach(var genre in Genres)
+					{
+						<option value="@genre.Id">@genre.Name</option>
+					}
+				</InputSelect>
+
 				<InputSelect @bind-Value="Model.DirectorId" class="form-control mb-3">
                 <option value=0>Director ...</option>
                 @foreach (var instructor in Directors)
@@ -60,9 +67,19 @@
 	List<GenreDTO> Genres = new();
 	List<SimilarFilmDTO> SimilarFilms = new();
 
+	//Here and in Editform tag
+	EditContext EditContext { get; set; }
+
+	//Holding the selected ids for a created/edited film
+	public int[] SelectedGenres { get; set; } = new int[]{};
+
 	protected override async Task OnInitializedAsync()
 	{
+		//EditContext = new(SelectedGenres);
+
 		Directors = await AdminService.GetAsync<DirectorDTO>($"directors");
+		Genres = await AdminService.GetAsync<GenreDTO>($"genres");
+
 	}
 
 	async Task OnFormSubmit()
@@ -71,6 +88,7 @@
 		{
 			if (Page.Equals(PageType.Create))
 			{
+				
 				await AdminService.CreateAsync<FilmDTO>($"films", Model);
 			}
 			else if (Page.Equals(PageType.Edit))
