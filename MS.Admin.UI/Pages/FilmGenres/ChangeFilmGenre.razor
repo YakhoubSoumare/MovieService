@@ -1,4 +1,4 @@
-﻿@inject IAdminService AdminService
+﻿@*@inject IAdminService AdminService
 
 <div class="d-flex w-25 m-xl-auto">
 	<EditForm Model="Model" OnValidSubmit="OnFormSubmit">
@@ -13,6 +13,10 @@
 	[Parameter] public EventCallback<string> OnChange { get; set; }
 	List<FilmDTO> Films = new();
 	List<GenreDTO> Genres = new();
+
+	/*Holding titles to delete*/
+	public List<string> Titles { get; set; } = new();
+	public string title = string.Empty;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -44,3 +48,4 @@
 		}
 	}
 }
+*@

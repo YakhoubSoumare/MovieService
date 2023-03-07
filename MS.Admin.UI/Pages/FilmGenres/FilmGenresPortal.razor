@@ -1,4 +1,4 @@
-﻿@inject IAdminService AdminService
+﻿@*@inject IAdminService AdminService
 
 @if (!string.IsNullOrEmpty(Alert))
 {
@@ -12,9 +12,9 @@
 {
 	<ChangeFilmGenre RTPage="@Navigation" OnChange="OnChange"></ChangeFilmGenre>
 }
-else if (Navigation.Equals(RTPageType.Delete))
+else if (Navigation.Equals(PageType.Edit) || (Navigation.Equals(PageType.Delete)))
 {
-	<ChangeFilmGenre RTPage="@Navigation" OnChange="OnChange"></ChangeFilmGenre>
+	<ChangeFilmGenre Page="@Navigation" Model="@Filmgenre" OnChange="OnChange"></ChangeFilmGenre>
 }
 
 <div class="d-flex me-1">
@@ -49,6 +49,10 @@ else if (Navigation.Equals(RTPageType.Delete))
 
 	async Task OnClick(RTClickModel model)
 	{
+		/**holding the selected film-genre connection to delete**/
+		var Filmgenres = await AdminService.GetAsync<ViewFilmGenresDTO>($"filmgenres");
+		Filmgenres = Filmgenres.Where(c => c.FilmId.Equals(model.FilmId) && c.GenreId.Equals(model.SecondId)).ToList();
+		Filmgenre = Filmgenres.FirstOrDefault();
 		ChangeRTPageType(model.RTPageType);
 	}
 
@@ -63,85 +67,6 @@ else if (Navigation.Equals(RTPageType.Delete))
 		catch
 		{
 			Alert = $"Couldn't create/delete the film-genre connection";
-		}
-	}
-}
-
-@*@inject IAdminService AdminService
-
-@if (!string.IsNullOrEmpty(Alert))
-{
-	<div class="alert alert-danger alert-dismissible fade show w-25" role="alert">
-		<strong>couldn't create genre.</strong>
-		<button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="CloseAlert" aria-label="Close"></button>
-	</div>
-}
-
-@if (Navigation.Equals(PageType.Create))
-{
-	<ChangeFilmGenres Page="@Navigation" OnChange="OnChange"></ChangeFilmGenres>
-}
-else if (Navigation.Equals(PageType.Delete))
-{
-	<ChangeFilmGenres Page="@Navigation" Model="@FilmGenres" OnChange="OnChange"></ChangeFilmGenres>
-}
-
-<div class="d-flex me-1">
-	<a class="btn btn-outline-secondary me-1" href="/" role="button">Home</a>
-	<button type="button" class="btn btn-outline-primary me-1" @onclick="()=>ChangePageType(PageType.Index)">Index</button>
-	<button type="button" class="btn btn-outline-success" @onclick="()=>ChangePageType(PageType.Create)">Create</button>
-</div>
-
-<GenresIndex OnClick="OnClick" Model="Model"></GenresIndex>
-
-@code {
-	[Parameter] public List<GenreDTO> Model { get; set; } = new();
-
-	public string Alert = string.Empty;
-
-	[Parameter] public string Navigation { get; set; } = PageType.Index;
-
-	public GenreDTO Genre = new();
-
-	protected async override Task OnInitializedAsync()
-	{
-		Model = await AdminService.GetAsync<GenreDTO>($"genres");
-		//var test = await AdminService.SingleAsync<GenreDTO>($"genres/2");
-		//await AdminService.DeleteAsync<EditGenreDTO>("genres", 8);
-
-		Alert = string.Empty;
-	}
-
-	void ChangePageType(string pageType)
-	{
-		Navigation = pageType;
-	}
-
-	void CloseAlert()
-	{
-		Alert = string.Empty;
-	}
-
-	async Task OnClick(ClickModel model)
-	{
-		if (model.PageType.Equals(PageType.Edit) || model.PageType.Equals(PageType.Delete))
-		{
-			Genre = await AdminService.SingleAsync<GenreDTO>($"genres/{model.Id}");
-		}
-		ChangePageType(model.PageType);
-	}
-
-	async Task OnChange(string alert)
-	{
-		try
-		{
-			Alert = alert;
-			Model = await AdminService.GetAsync<GenreDTO>($"genres");
-			ChangePageType(PageType.Index);
-		}
-		catch
-		{
-			Alert = $"Couldn't create/edit/delete the genre";
 		}
 	}
 }*@

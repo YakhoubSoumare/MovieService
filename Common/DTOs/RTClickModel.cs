@@ -1,3 +1,3 @@
 ﻿namespace Common.DTOs;
 
-public record RTClickModel(string RTPageType, int FilmId, int SimilarId);
+public record RTClickModel(string RTPageType, int FilmId, int SecondId);
