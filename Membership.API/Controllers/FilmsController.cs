@@ -1,5 +1,8 @@
-﻿using Common.DTOs;
+﻿using System.Collections.Generic;
+using Common.DTOs;
+using Membership.Database.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using VOD.Membership.Database.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -65,8 +68,27 @@ namespace Membership.API.Controllers
 			try
 			{
 				var entity = await _db.AddAsync<Film, CreateFilmDTO>(dto);
-				if (await _db.SaveChangesAsync())
+				var success = await _db.SaveChangesAsync();
+
+				if (success)
 				{
+					var emptyGenre = (dto.SelectedGenres.Length.Equals(1) && dto.SelectedGenres[0].Equals(0));
+
+					if (!(dto.SelectedGenres == null && dto.SelectedGenres.Length.Equals(0) || emptyGenre))
+					{
+						foreach (var genreId in dto.SelectedGenres)
+						{
+							await _db.RTAddAsync<FilmGenre, BaseFilmGenresDTO>(new BaseFilmGenresDTO
+							{
+								FilmId = entity.Id,
+								GenreId = genreId
+							});
+
+						}
+					}
+
+					success = await _db.SaveChangesAsync();
+
 					return Results.Created(_db.GetURI<Film>(entity), entity);
 				}
 				return Results.BadRequest();
@@ -92,7 +114,9 @@ namespace Membership.API.Controllers
 				{
 					return Results.NotFound("Could not find given id in database");
 				}
-				_db.Update<Film, EditFilmDTO>(id, dto);
+
+				_db.Update<Film, EditFilmDTO>(id, dto); /*Tracking issues*/
+
 
 				var success = await _db.SaveChangesAsync();
 				if (success)

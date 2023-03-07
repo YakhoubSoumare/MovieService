@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Membership.Database.Migrations
 {
     [DbContext(typeof(MSContext))]
-    [Migration("20230225140446_CreateTables")]
-    partial class CreateTables
+    [Migration("20230302102431_seededDataB")]
+    partial class seededDataB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace Membership.Database.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Membership.Database.Entities.Film", b =>
+            modelBuilder.Entity("Membership.Database.Entities.Director", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -40,7 +40,7 @@ namespace Membership.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Films");
+                    b.ToTable("Directors");
                 });
 
             modelBuilder.Entity("Membership.Database.Entities.Film", b =>
@@ -55,7 +55,7 @@ namespace Membership.Database.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("FilmId")
+                    b.Property<int>("DirectorId")
                         .HasColumnType("int");
 
                     b.Property<string>("FilmUrl")
@@ -72,7 +72,7 @@ namespace Membership.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FilmId");
+                    b.HasIndex("DirectorId");
 
                     b.ToTable("Films");
                 });
@@ -127,13 +127,13 @@ namespace Membership.Database.Migrations
 
             modelBuilder.Entity("Membership.Database.Entities.Film", b =>
                 {
-                    b.HasOne("Membership.Database.Entities.Film", "Film")
+                    b.HasOne("Membership.Database.Entities.Director", "Director")
                         .WithMany()
-                        .HasForeignKey("FilmId")
+                        .HasForeignKey("DirectorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Film");
+                    b.Navigation("Director");
                 });
 
             modelBuilder.Entity("Membership.Database.Entities.FilmGenre", b =>

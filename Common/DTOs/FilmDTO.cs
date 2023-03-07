@@ -9,6 +9,7 @@ public class FilmDTO
 	public virtual DirectorDTO? Director { get; set; }
 	public string? Description { get; set; }
 	public string? FilmUrl { get; set; }
+	public int[] SelectedGenres { get; set; }
 
 	public List<BaseGenreDTO>? Genres { get; set; }
 	public List<BaseSimilarFilmDTO>? SimilarFilms { get; set; }
@@ -21,6 +22,7 @@ public class CreateFilmDTO
 	public string? Description { get; set; }
 	public string? FilmUrl { get; set; }
 	public DateTime? Released { get; set; }
+	public int[] SelectedGenres { get; set; }
 }
 
 public class EditFilmDTO : CreateFilmDTO

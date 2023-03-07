@@ -1,0 +1,46 @@
+﻿@inject IAdminService AdminService
+
+<div class="d-flex w-25 m-xl-auto">
+	<EditForm Model="Model" OnValidSubmit="OnFormSubmit">
+		<h4>@RTPage FilmGenre</h4>
+
+	</EditForm>
+</div>
+
+@code {
+	[Parameter] public ViewFilmGenresDTO Model { get; set; } = new();
+	[Parameter] public string RTPage { get; set; } = string.Empty;
+	[Parameter] public EventCallback<string> OnChange { get; set; }
+	List<FilmDTO> Films = new();
+	List<GenreDTO> Genres = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		Films = await AdminService.GetAsync<FilmDTO>($"films");
+		Genres = await AdminService.GetAsync<GenreDTO>($"films");
+	}
+
+	async Task OnFormSubmit()
+	{
+		try
+		{
+			if (RTPage.Equals(RTPageType.Create))
+			{
+				BaseFilmGenresDTO filmGenreModel = new();
+				filmGenreModel.FilmId = Model.FilmId;
+				filmGenreModel.GenreId = Model.GenreId;
+
+				await AdminService.CreateAsync<BaseFilmGenresDTO>($"filmgenres", filmGenreModel);
+			}
+			else if (RTPage.Equals(RTPageType.Delete))
+			{
+				await AdminService.DeleteRefTable($"films/{Model.FilmId}/genres/{Model.GenreId}");
+			}
+			await OnChange.InvokeAsync("");
+		}
+		catch
+		{
+			await OnChange.InvokeAsync("could not create/delete film-genre connection");
+		}
+	}
+}

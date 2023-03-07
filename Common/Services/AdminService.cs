@@ -101,4 +101,18 @@ public class AdminService : IAdminService
 			throw;
 		}
 	}
+
+	public async Task DeleteRefTable(string uri)
+	{
+		try
+		{
+			using HttpResponseMessage response = await _http.Client.DeleteAsync($"{uri}");
+			response.EnsureSuccessStatusCode();
+		}
+		catch
+		{
+			throw;
+		}
+	}
+
 }

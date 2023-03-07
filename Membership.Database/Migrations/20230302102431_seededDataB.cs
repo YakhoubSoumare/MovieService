@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Membership.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateTables : Migration
+    public partial class seededDataB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Films",
+                name: "Directors",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -21,7 +21,7 @@ namespace Membership.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Films", x => x.Id);
+                    table.PrimaryKey("PK_Directors", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -45,7 +45,7 @@ namespace Membership.Database.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Released = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    FilmId = table.Column<int>(type: "int", nullable: false),
+                    DirectorId = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     FilmUrl = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true)
                 },
@@ -53,9 +53,9 @@ namespace Membership.Database.Migrations
                 {
                     table.PrimaryKey("PK_Films", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Films_Films_FilmId",
-                        column: x => x.FilmId,
-                        principalTable: "Films",
+                        name: "FK_Films_Directors_DirectorId",
+                        column: x => x.DirectorId,
+                        principalTable: "Directors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -113,9 +113,9 @@ namespace Membership.Database.Migrations
                 column: "GenreId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Films_FilmId",
+                name: "IX_Films_DirectorId",
                 table: "Films",
-                column: "FilmId");
+                column: "DirectorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SimilarFilms_SimilarFilmId",
@@ -139,7 +139,7 @@ namespace Membership.Database.Migrations
                 name: "Films");
 
             migrationBuilder.DropTable(
-                name: "Films");
+                name: "Directors");
         }
     }
 }

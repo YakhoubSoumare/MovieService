@@ -17,3 +17,16 @@ public class BaseSimilarFilmDTO
 	public int FilmId { get; set; }
 	public int SimilarFilmId { get; set; }
 }
+
+
+//To view movie titles
+public class ViewSimilarFilmDTO
+{
+	
+	public int FilmId { get; set; }
+	public int SimilarFilmId { get; set; }
+
+	
+	public string? FilmTitle { get; set; }
+	public string? SimilarTitle { get; set; }
+}

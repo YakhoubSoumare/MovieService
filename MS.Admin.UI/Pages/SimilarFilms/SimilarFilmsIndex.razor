@@ -1,0 +1,32 @@
+﻿
+<table class="table">
+    <thead>
+        <tr>
+            <th>Film</th>
+            <th>Similar</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>@item.FilmTitle</td>
+                <td>@(item.SimilarTitle)</td>
+                <td>
+                    <div class="d-flex justify-content-end me-1">
+                        <button type="button" class="btn btn-outline-danger" @onclick="() => OnClick.InvokeAsync(new RTClickModel(RTPageType.Delete, item.FilmId, item.SimilarFilmId))">Delete</button>
+                    </div>
+                </td>
+            </tr>
+
+            
+        }
+     </tbody>
+ </table>
+                
+
+@code {
+	[Parameter] public List<ViewSimilarFilmDTO> Model { get; set; } = new();
+	[Parameter] public EventCallback<RTClickModel> OnClick{ get; set; }
+}

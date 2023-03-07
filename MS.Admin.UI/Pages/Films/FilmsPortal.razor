@@ -57,7 +57,7 @@ else if (Navigation.Equals(PageType.Edit) || (Navigation.Equals(PageType.Delete)
 	{
 		if (model.PageType.Equals(PageType.Edit) || model.PageType.Equals(PageType.Delete))
 		{
-			Film = await AdminService.SingleAsync<FilmDTO>($"films/{model.Id}");
+			Film = await AdminService.SingleAsync<FilmDTO>($"films/{model.Id}"); 
 		}
 		ChangePageType(model.PageType);
 	}

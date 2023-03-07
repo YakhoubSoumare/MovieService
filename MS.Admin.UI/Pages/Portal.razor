@@ -15,7 +15,7 @@
 	<DirectorsPortal />
 }
 
-@*@if (Route.Equals(Routes.SimilarFilms))
+@if (Route.Equals(Routes.SimilarFilms))
 {
 	<SimilarFilmsPortal />
 }
@@ -23,7 +23,7 @@
 @if (Route.Equals(Routes.FilmGenres))
 {
 	<FilmGenresPortal />
-}*@
+}
 
 @code {
 	[Parameter] public string Route { get; set; } = string.Empty;

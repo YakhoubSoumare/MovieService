@@ -34,12 +34,12 @@
 					<ValidationMessage For="@(() => Model.Released)" />
 				</div>
 
-				<InputSelect @bind-Value="SelectedGenres" class="w-100 mb-3">
+				@*<InputSelect @bind-Value="SelectedGenres" class="w-100 mb-3">
 					@foreach(var genre in Genres)
 					{
 						<option value="@genre.Id">@genre.Name</option>
 					}
-				</InputSelect>
+				</InputSelect>*@
 
 				<InputSelect @bind-Value="Model.DirectorId" class="form-control mb-3">
                 <option value=0>Director ...</option>
@@ -47,8 +47,15 @@
                 {
                     <option value="@instructor.Id">@instructor.Name</option>
                 }
-            </InputSelect>
-				<ValidationMessage For="@(() => Model.DirectorId)" />
+				</InputSelect>
+
+				<InputSelect @bind-Value="SelectedGenres" class="form-check-input mb-3 w-100 h-25">
+					@foreach (var genre in Genres)
+					{
+						<option value="@genre.Id">@genre.Name</option>
+					}
+				</InputSelect>
+
 			}
 			<div class="d-flex justify-content-center">
 				<input class="btn btn-@(Page.Equals(PageType.Delete) ? "danger" : "primary")" type="submit" value="@Page">
@@ -75,7 +82,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		//EditContext = new(SelectedGenres);
+		EditContext = new(SelectedGenres);
 
 		Directors = await AdminService.GetAsync<DirectorDTO>($"directors");
 		Genres = await AdminService.GetAsync<GenreDTO>($"genres");
@@ -86,17 +93,58 @@
 	{
 		try
 		{
+			Model.SelectedGenres = SelectedGenres;
+
 			if (Page.Equals(PageType.Create))
 			{
-				
+				//Changed from CreateFilmDTO to FilmDTO
 				await AdminService.CreateAsync<FilmDTO>($"films", Model);
 			}
 			else if (Page.Equals(PageType.Edit))
 			{
 				await AdminService.EditAsync<FilmDTO>($"films", Model.Id, Model);
+				var film = await AdminService.SingleAsync<FilmDTO>($"films/{Model.Id}"); //To have something to compare with
+
+				if (!(Model.SelectedGenres.Count().Equals(0))) //Clean the previous genres fetched to film
+				{
+					var filmGenres = await AdminService.GetAsync<FilmGenresDTO>($"filmgenres");
+					filmGenres = filmGenres.Where(fg => fg.FilmId.Equals(film.Id)).ToList();
+					foreach (var genre in filmGenres)
+					{
+						await AdminService.DeleteRefTable($"films/{film.Id}/genres/{genre.GenreId}");
+					}
+				}
+				foreach (var genreId in Model.SelectedGenres)
+				{
+					await AdminService.CreateAsync<BaseFilmGenresDTO>($"filmgenres", new BaseFilmGenresDTO
+						{
+							FilmId = film.Id,
+							GenreId = genreId
+						});
+				}
 			}
 			else if (Page.Equals(PageType.Delete))
 			{
+				var test = Model.Genres;
+				var test2 = Model.SimilarFilms;//Att fortsätta med
+				var emptyGenre = (test.Count.Equals(0));
+				var emptySimilars = (test2.Count.Equals(0));//Att fortsätta med
+
+				if (Model.Genres != null && !emptyGenre)
+				{
+					foreach(var genre in test)
+					{
+						await AdminService.DeleteRefTable($"films/{Model.Id}/genres/{genre.Id}");
+					}
+				}
+
+				if (Model.SimilarFilms != null && !emptySimilars)
+				{
+					foreach (var similar in test)
+					{
+						await AdminService.DeleteRefTable($"films/{Model.Id}/similar/{similar.Id}");
+					}
+				}
 				await AdminService.DeleteAsync<FilmDTO>($"films", Model.Id);
 			}
 

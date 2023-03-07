@@ -29,9 +29,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<MSContext>(
-options => options.UseSqlServer(
-builder.Configuration.GetConnectionString("MSConnection")));
+builder.Services.AddDbContext<MSContext>(options =>
+{
+	options.UseSqlServer(builder.Configuration.GetConnectionString("MSConnection"));
+	options.EnableSensitiveDataLogging();
+});
 
 ConfigureAutomapper(builder.Services);
 
@@ -82,10 +84,16 @@ void ConfigureAutomapper(IServiceCollection services)
 
 		cfg.CreateMap<CreateFilmDTO, Film>()
 		.ForMember(dest => dest.SimilarFilms, src => src.Ignore())
-		.ForMember(dest => dest.Director, src => src.Ignore())
-		.ForMember(dest => dest.Genres, src => src.Ignore());
+		.ForMember(dest => dest.Director, src => src.Ignore());
+		//.ForMember(dest => dest.Genres, src => src.Ignore());
 
 		cfg.CreateMap<SimilarFilm, BaseSimilarFilmDTO>().ReverseMap();
+		cfg.CreateMap<SimilarFilm, ViewSimilarFilmDTO>()
+		.ForMember(dest => dest.FilmTitle, src => src.MapFrom(s => s.Film.Title))
+		.ForMember(dest => dest.SimilarTitle, src => src.MapFrom(s => s.Similar.Title))
+		.ReverseMap()
+		.ForMember(dest => dest.Film, src => src.Ignore())
+		.ForMember(dest => dest.Similar, src => src.Ignore());
 
 		cfg.CreateMap<FilmGenre, FilmGenresDTO>()
 		.ForMember(dest => dest.Film, scr => scr.Ignore())
@@ -96,6 +104,13 @@ void ConfigureAutomapper(IServiceCollection services)
 		.ForMember(dest => dest.Genre, src => src.Ignore())
 		.ReverseMap();
 		//.ForMember(dest => dest.Film, src => src.Ignore());
+
+		cfg.CreateMap<FilmGenre, ViewFilmGenresDTO>()
+		.ForMember(dest => dest.FilmTitle, src => src.MapFrom(s => s.Film.Title))
+		.ForMember(dest => dest.GenreName, src => src.MapFrom(s => s.Genre.Name))
+		.ReverseMap()
+		.ForMember(dest => dest.Film, src => src.Ignore())
+		.ForMember(dest => dest.Genre, src => src.Ignore());
 
 	});
 

@@ -1,4 +1,5 @@
 ﻿using Common.DTOs;
+using Membership.Database.Entities;
 using Microsoft.AspNetCore.Mvc;
 using VOD.Membership.Database.Services;
 
@@ -23,7 +24,7 @@ namespace Membership.API.Controllers
 			var filmGenres = new object();
 			try
 			{
-				filmGenres = await _db.RTGetAsync<FilmGenre, BaseFilmGenresDTO>();
+				filmGenres = await _db.FilmGenresGetAsync();
 				if (filmGenres is null)
 				{
 					return Results.BadRequest();
@@ -36,6 +37,7 @@ namespace Membership.API.Controllers
 			return Results.Ok(filmGenres);
 		}
 
+
 		[Route("api/filmgenres")]
 		[HttpPost]
 		public async Task<IResult> Post([FromBody] BaseFilmGenresDTO dto)
@@ -43,10 +45,30 @@ namespace Membership.API.Controllers
 			return await _db.HTTPPAddRTAsync<FilmGenre, BaseFilmGenresDTO>(dto);
 		}
 
-		[HttpDelete("{id}")]
-		public async Task<IResult> Delete([FromBody] BaseFilmGenresDTO dto)
+		[Route("api/films/{filmId}/genres/{genreId}")]
+		[HttpDelete]
+		public async Task<IResult> Delete(int filmId, int genreId)
 		{
-			return await _db.HTTPDeleteRTAsync<FilmGenre, BaseFilmGenresDTO>(dto);
+			try
+			{
+				var deletion = await _db.DeleteFilmGenres(filmId, genreId);
+				if (!deletion)
+				{
+					return Results.BadRequest("Unable to delete given connection");
+				}
+				var success = await _db.SaveChangesAsync();
+				if (success)
+				{
+					return Results.NoContent();
+				}
+			}
+			catch
+			{
+				return Results.BadRequest();
+			}
+
+			return Results.BadRequest();
 		}
 	}
+
 }

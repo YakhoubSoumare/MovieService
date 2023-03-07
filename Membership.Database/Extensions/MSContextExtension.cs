@@ -23,47 +23,47 @@ public static class MSContextExtensions
 
 		try
 		{
-			#region Seed Films
+			//#region Seed Films
 			////Spiderman
-			//await db.AddAsync<Film, FilmDTO>(new FilmDTO
+			//await db.AddAsync<Director, DirectorDTO>(new DirectorDTO
 			//{
 			//	Name = "Sam Raimi"
 			//});
 
 			////Avatar
-			//await db.AddAsync<Film, FilmDTO>(new FilmDTO
+			//await db.AddAsync<Director, DirectorDTO>(new DirectorDTO
 			//{
 			//	Name = "James Cameron"
 			//});
 
 			////Batman
-			//await db.AddAsync<Film, FilmDTO>(new FilmDTO
+			//await db.AddAsync<Director, DirectorDTO>(new DirectorDTO
 			//{
 			//	Name = "Matt Reeves"
 			//});
 
 			////Ironman
-			//await db.AddAsync<Film, FilmDTO>(new FilmDTO
+			//await db.AddAsync<Director, DirectorDTO>(new DirectorDTO
 			//{
 			//	Name = "Jon Favreau"
 			//});
 
 			////Ex Machina
-			//await db.AddAsync<Film, FilmDTO>(new FilmDTO
+			//await db.AddAsync<Director, DirectorDTO>(new DirectorDTO
 			//{
 			//	Name = "Alex Garland"
 			//});
 
 			////Matrix
-			//await db.AddAsync<Film, FilmDTO>(new FilmDTO
+			//await db.AddAsync<Director, DirectorDTO>(new DirectorDTO
 			//{
 			//	Name = "Wachowski"
 			//});
 
 			//await db.SaveChangesAsync();
-			#endregion
+			//#endregion
 
-			#region Seed Genres
+			//#region Seed Genres
 
 			//await db.AddAsync<Genre, GenreDTO>(new GenreDTO { Name = "Action" });
 
@@ -76,17 +76,17 @@ public static class MSContextExtensions
 			//await db.AddAsync<Genre, GenreDTO>(new GenreDTO { Name = "Drama" });
 
 			//await db.SaveChangesAsync();
-			#endregion
+			//#endregion
 
-			#region Seed Films
+			//#region Seed Films
 
 			//await db.AddAsync<Film, FilmDTO>
 			//	(new FilmDTO
 			//	{
 
 			//		Title = "Avatar",
-			//		Released = new DateTime(2009,01,01),
-			//		FilmId = 2,
+			//		Released = new DateTime(2009, 01, 01),
+			//		DirectorId = 2,
 			//		Description = description.Substring(0, 20),
 			//		FilmUrl = "<iframe width=\"1280\" height=\"720\" src=\"https://www.youtube.com/embed/5PSNL1qE6VY\" title=\"Avatar | Official Trailer (HD) | 20th Century FOX\" " +
 			//		"frameborder=\"0\" " +
@@ -100,7 +100,7 @@ public static class MSContextExtensions
 
 			//		Title = "Spider Man",
 			//		Released = new DateTime(2002, 01, 01),
-			//		FilmId = 1,
+			//		DirectorId = 1,
 			//		Description = description.Substring(21, 20),
 			//		FilmUrl = "<iframe width=\"1280\" height=\"720\" src=\"https://www.youtube.com/embed/t06RUxPbp_c\" title=\"SPIDER-MAN [2002] – " +
 			//		"Official Trailer (HD)\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; " +
@@ -113,7 +113,7 @@ public static class MSContextExtensions
 
 			//		Title = "Iron Man",
 			//		Released = new DateTime(2008, 01, 01),
-			//		FilmId = 4,
+			//		DirectorId = 4,
 			//		Description = description.Substring(42, 20),
 			//		FilmUrl = "<iframe width=\"1280\" height=\"720\" src=\"https://www.youtube.com/embed/8ugaeA-nMTc\" title=\"Iron Man (2008) Trailer #1 | Movieclips Classic Trailers\" " +
 			//		"frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>"
@@ -125,7 +125,7 @@ public static class MSContextExtensions
 
 			//		Title = "Matrix",
 			//		Released = new DateTime(1999, 01, 01),
-			//		FilmId = 6,
+			//		DirectorId = 6,
 			//		Description = description.Substring(63, 20),
 			//		FilmUrl = "<iframe width=\"1280\" height=\"720\" src=\"https://www.youtube.com/embed/m8e-FF8MsqU\" title=\"Matrix Trailer HD (1999)\" frameborder=\"0\" " +
 			//		"allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>"
@@ -137,7 +137,7 @@ public static class MSContextExtensions
 
 			//		Title = "Ex Machina",
 			//		Released = new DateTime(2015, 01, 01),
-			//		FilmId = 5,
+			//		DirectorId = 5,
 			//		Description = description.Substring(11, 20),
 			//		FilmUrl = "<iframe width=\"1280\" height=\"720\" src=\"https://www.youtube.com/embed/sNExF5WYMaA\" title=\"Ex Machina - Official International Trailer 1 (Universal Pictures) HD\" frameborder=\"0\" " +
 			//		"allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>"
@@ -149,7 +149,7 @@ public static class MSContextExtensions
 
 			//		Title = "Batman",
 			//		Released = new DateTime(2022, 01, 01),
-			//		FilmId = 3,
+			//		DirectorId = 3,
 			//		Description = description.Substring(31, 20),
 			//		FilmUrl = "<iframe width=\"1280\" height=\"720\" src=\"https://www.youtube.com/embed/mqqft2x_Aa4\" title=\"THE BATMAN – Main Trailer\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" " +
 			//		"allowfullscreen></iframe>"
@@ -157,29 +157,29 @@ public static class MSContextExtensions
 
 			//await db.SaveChangesAsync();
 
-			#endregion
+			//#endregion
 
-			#region Seed SimilarFilms
+			//#region Seed SimilarFilms
 
-			//await db.RTAddAsync<SimilarFilm, SimilarFilmDTO>(new SimilarFilmDTO
+			//await db.RTAddAsync<SimilarFilm, BaseSimilarFilmDTO>(new BaseSimilarFilmDTO
 			//{
 			//	FilmId = 2,
-			//	SimilarFilmId= 3,
+			//	SimilarFilmId = 3,
 			//});
 
-			//await db.RTAddAsync<SimilarFilm, SimilarFilmDTO>(new SimilarFilmDTO
+			//await db.RTAddAsync<SimilarFilm, BaseSimilarFilmDTO>(new BaseSimilarFilmDTO
 			//{
 			//	FilmId = 2,
 			//	SimilarFilmId = 6,
 			//});
 
-			//await db.RTAddAsync<SimilarFilm, SimilarFilmDTO>(new SimilarFilmDTO
+			//await db.RTAddAsync<SimilarFilm, BaseSimilarFilmDTO>(new BaseSimilarFilmDTO
 			//{
 			//	FilmId = 3,
 			//	SimilarFilmId = 6,
 			//});
 
-			//await db.RTAddAsync<SimilarFilm, SimilarFilmDTO>(new SimilarFilmDTO
+			//await db.RTAddAsync<SimilarFilm, BaseSimilarFilmDTO>(new BaseSimilarFilmDTO
 			//{
 			//	FilmId = 4,
 			//	SimilarFilmId = 5,
@@ -187,36 +187,36 @@ public static class MSContextExtensions
 
 			//await db.SaveChangesAsync();
 
-			#endregion
+			//#endregion
 
-			#region Seed FilmGenres
+			//#region Seed FilmGenres
 
-			//await db.RTAddAsync<FilmGenre, FilmGenresDTO>(new FilmGenresDTO(1,1));
-			//await db.RTAddAsync<FilmGenre, FilmGenresDTO>(new FilmGenresDTO(1, 3));
-			//await db.RTAddAsync<FilmGenre, FilmGenresDTO>(new FilmGenresDTO(1, 5));
+			//await db.RTAddAsync<FilmGenre, BaseFilmGenresDTO>(new BaseFilmGenresDTO { FilmId = 1, GenreId = 1});
+			//await db.RTAddAsync<FilmGenre, BaseFilmGenresDTO>(new BaseFilmGenresDTO { FilmId = 1, GenreId = 3 });
+			//await db.RTAddAsync<FilmGenre, BaseFilmGenresDTO>(new BaseFilmGenresDTO { FilmId = 1, GenreId = 5 });
 
-			//await db.RTAddAsync<FilmGenre, FilmGenresDTO>(new FilmGenresDTO(2, 1));
-			//await db.RTAddAsync<FilmGenre, FilmGenresDTO>(new FilmGenresDTO(2, 2));
-			//await db.RTAddAsync<FilmGenre, FilmGenresDTO>(new FilmGenresDTO(2, 3));
+			//await db.RTAddAsync<FilmGenre, BaseFilmGenresDTO>(new BaseFilmGenresDTO { FilmId = 2, GenreId = 1 });
+			//await db.RTAddAsync<FilmGenre, BaseFilmGenresDTO>(new BaseFilmGenresDTO { FilmId = 2, GenreId = 2 });
+			//await db.RTAddAsync<FilmGenre, BaseFilmGenresDTO>(new BaseFilmGenresDTO { FilmId = 2, GenreId = 3 });
 
-			//await db.RTAddAsync<FilmGenre, FilmGenresDTO>(new FilmGenresDTO(3, 1));
-			//await db.RTAddAsync<FilmGenre, FilmGenresDTO>(new FilmGenresDTO(3, 2));
-			//await db.RTAddAsync<FilmGenre, FilmGenresDTO>(new FilmGenresDTO(3, 3));
+			//await db.RTAddAsync<FilmGenre, BaseFilmGenresDTO>(new BaseFilmGenresDTO { FilmId = 3, GenreId = 1 });
+			//await db.RTAddAsync<FilmGenre, BaseFilmGenresDTO>(new BaseFilmGenresDTO { FilmId = 3, GenreId = 2 });
+			//await db.RTAddAsync<FilmGenre, BaseFilmGenresDTO>(new BaseFilmGenresDTO { FilmId = 3, GenreId = 3 });
 
-			//await db.RTAddAsync<FilmGenre, FilmGenresDTO>(new FilmGenresDTO(4, 1));
-			//await db.RTAddAsync<FilmGenre, FilmGenresDTO>(new FilmGenresDTO(4, 2));
+			//await db.RTAddAsync<FilmGenre, BaseFilmGenresDTO>(new BaseFilmGenresDTO { FilmId = 4, GenreId = 1 });
+			//await db.RTAddAsync<FilmGenre, BaseFilmGenresDTO>(new BaseFilmGenresDTO { FilmId = 4, GenreId = 2 });
 
-			//await db.RTAddAsync<FilmGenre, FilmGenresDTO>(new FilmGenresDTO(5, 1));
-			//await db.RTAddAsync<FilmGenre, FilmGenresDTO>(new FilmGenresDTO(5, 2));
+			//await db.RTAddAsync<FilmGenre, BaseFilmGenresDTO>(new BaseFilmGenresDTO { FilmId = 5, GenreId = 1 });
+			//await db.RTAddAsync<FilmGenre, BaseFilmGenresDTO>(new BaseFilmGenresDTO { FilmId = 5, GenreId = 2 });
 
-			//await db.RTAddAsync<FilmGenre, FilmGenresDTO>(new FilmGenresDTO(6, 1));
-			//await db.RTAddAsync<FilmGenre, FilmGenresDTO>(new FilmGenresDTO(6, 2));
-			//await db.RTAddAsync<FilmGenre, FilmGenresDTO>(new FilmGenresDTO(6, 3));
-			//await db.RTAddAsync<FilmGenre, FilmGenresDTO>(new FilmGenresDTO(6, 5));
+			//await db.RTAddAsync<FilmGenre, BaseFilmGenresDTO>(new BaseFilmGenresDTO { FilmId = 6, GenreId = 1 });
+			//await db.RTAddAsync<FilmGenre, BaseFilmGenresDTO>(new BaseFilmGenresDTO { FilmId = 6, GenreId = 2 });
+			//await db.RTAddAsync<FilmGenre, BaseFilmGenresDTO>(new BaseFilmGenresDTO { FilmId = 6, GenreId = 3 });
+			//await db.RTAddAsync<FilmGenre, BaseFilmGenresDTO>(new BaseFilmGenresDTO { FilmId = 6, GenreId = 5 });
 
 			//await db.SaveChangesAsync();
 
-			#endregion
+			//#endregion
 
 
 
