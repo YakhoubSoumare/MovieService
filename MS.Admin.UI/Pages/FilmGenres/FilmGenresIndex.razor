@@ -1,9 +1,9 @@
-﻿
-@*<table class="table">
+﻿<table class="table">
     <thead>
         <tr>
             <th>Film</th>
             <th>Genre</th>
+
             <th></th>
         </tr>
     </thead>
@@ -15,16 +15,16 @@
                 <td>@(item.GenreName)</td>
                 <td>
                     <div class="d-flex justify-content-end me-1">
-                        <button type="button" class="btn btn-outline-danger" @onclick="() => OnClick.InvokeAsync(new RTClickModel(RTPageType.Delete, item.FilmId, item.GenreId))">Delete</button>
+                        <button type="button" class="btn btn-outline-danger" @onclick="() => OnClick.InvokeAsync(new RTClickModel(PageType.Delete, item.FilmId, item.GenreId))">Delete</button>
                     </div>
                 </td>
             </tr>
         }
+
     </tbody>
 </table>
 
 @code {
-    [Parameter] public List<ViewFilmGenresDTO> Model { get; set; } = new();
-	[Parameter] public EventCallback<RTClickModel> OnClick { get; set; }
+    [Parameter] public List<ViewFilmGenresDTO> Model { get; set; } = new List<ViewFilmGenresDTO>();
+    [Parameter] public EventCallback<RTClickModel> OnClick { get; set; }
 }
-*@

@@ -1,27 +1,57 @@
-﻿@*@inject IAdminService AdminService
+﻿@inject IAdminService AdminService
 
-<div class="d-flex w-25 m-xl-auto">
-	<EditForm Model="Model" OnValidSubmit="OnFormSubmit">
-		<h4>@RTPage FilmGenre</h4>
+<EditForm Model="Model" OnValidSubmit="OnFormSubmit">
+	<h4>@RTPage Film-Genre</h4>
 
-	</EditForm>
-</div>
+	<div class="mb-3">
+		@if (RTPage.Equals(RTPageType.Delete))
+		{
+			<div class="mb-2">
+				<input type="text" id="title1" class="form-control" disabled placeholder="@Model.FilmTitle" @bind-value="Model.FilmTitle">
+				<input type="text" id="title2" class="form-control" disabled placeholder="@Model.GenreName" @bind-value="Model.GenreName">
+			</div>
+		}
+		else if (RTPage.Equals(RTPageType.Create))
+		{
+			<InputSelect @bind-Value="Model.FilmId" class="form-control mb-3">
+				<option value=0>Film ...</option>
+				@foreach (var film in Films)
+				{
+					<option value="@film.Id">@film.Title</option>
+				}
+			</InputSelect>
+			<InputSelect @bind-Value="Model.GenreId" class="form-control mb-3">
+				<option value=0>Genre ...</option>
+				@foreach (var genre in Genres)
+				{
+					<option value="@genre.Id">@genre.Name</option>
+				}
+			</InputSelect>
+		}
+		<div class="d-flex justify-content-center">
+			<input class="btn btn-@(RTPage.Equals(RTPageType.Delete) ? "danger" : "primary")" type="submit" value="@RTPage">
+		</div>
+	</div>
+
+</EditForm>
 
 @code {
+	//data passed in from Portal Component
 	[Parameter] public ViewFilmGenresDTO Model { get; set; } = new();
-	[Parameter] public string RTPage { get; set; } = string.Empty;
-	[Parameter] public EventCallback<string> OnChange { get; set; }
-	List<FilmDTO> Films = new();
-	List<GenreDTO> Genres = new();
 
-	/*Holding titles to delete*/
-	public List<string> Titles { get; set; } = new();
-	public string title = string.Empty;
+	//Keeps track of Create or Delete PageType passed in from Portal Component
+	[Parameter] public string RTPage { get; set; } = string.Empty;
+
+	//Connect to method in Portal Component
+	[Parameter] public EventCallback<string> OnChange { get; set; }
+
+	List<BaseFilmDTO> Films { get; set; } = new();
+	List<BaseGenreDTO> Genres { get; set; } = new();
 
 	protected override async Task OnInitializedAsync()
 	{
-		Films = await AdminService.GetAsync<FilmDTO>($"films");
-		Genres = await AdminService.GetAsync<GenreDTO>($"films");
+		Films = await AdminService.GetAsync<BaseFilmDTO>($"films");
+		Genres = await AdminService.GetAsync<BaseGenreDTO>($"genres");
 	}
 
 	async Task OnFormSubmit()
@@ -30,11 +60,13 @@
 		{
 			if (RTPage.Equals(RTPageType.Create))
 			{
-				BaseFilmGenresDTO filmGenreModel = new();
-				filmGenreModel.FilmId = Model.FilmId;
-				filmGenreModel.GenreId = Model.GenreId;
+				var filmgenre = new BaseFilmGenresDTO
+					{
+						FilmId = Model.FilmId,
+						GenreId = Model.GenreId
+					};
 
-				await AdminService.CreateAsync<BaseFilmGenresDTO>($"filmgenres", filmGenreModel);
+				await AdminService.CreateAsync<BaseFilmGenresDTO>($"filmgenres", filmgenre);
 			}
 			else if (RTPage.Equals(RTPageType.Delete))
 			{
@@ -44,8 +76,7 @@
 		}
 		catch
 		{
-			await OnChange.InvokeAsync("could not create/delete film-genre connection");
+			await OnChange.InvokeAsync("Couldn't create/delete the similarity.");
 		}
 	}
 }
-*@

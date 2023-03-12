@@ -1,9 +1,9 @@
-﻿@*@inject IAdminService AdminService
+﻿@inject IAdminService AdminService
 
 @if (!string.IsNullOrEmpty(Alert))
 {
 	<div class="alert alert-danger alert-dismissible fade show w-25" role="alert">
-		<strong>couldn't create film.</strong>
+		<strong>couldn't create/delete similarity.</strong>
 		<button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="CloseAlert" aria-label="Close"></button>
 	</div>
 }
@@ -12,9 +12,9 @@
 {
 	<ChangeFilmGenre RTPage="@Navigation" OnChange="OnChange"></ChangeFilmGenre>
 }
-else if (Navigation.Equals(PageType.Edit) || (Navigation.Equals(PageType.Delete)))
+else if (Navigation.Equals(RTPageType.Delete))
 {
-	<ChangeFilmGenre Page="@Navigation" Model="@Filmgenre" OnChange="OnChange"></ChangeFilmGenre>
+	<ChangeFilmGenre RTPage="@Navigation" Model="@FilmGenre" OnChange="OnChange"></ChangeFilmGenre>
 }
 
 <div class="d-flex me-1">
@@ -28,8 +28,10 @@ else if (Navigation.Equals(PageType.Edit) || (Navigation.Equals(PageType.Delete)
 @code {
 	public string Alert { get; set; } = string.Empty;
 	public string Navigation { get; set; } = RTPageType.Index;
-	[Parameter] public List<ViewFilmGenresDTO> Model { get; set; } = new();
-	public ViewFilmGenresDTO Filmgenre { get; set; } = new();
+	public List<ViewFilmGenresDTO> Model { get; set; } = new();
+
+
+	public ViewFilmGenresDTO FilmGenre { get; set; } = new();
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -49,13 +51,23 @@ else if (Navigation.Equals(PageType.Edit) || (Navigation.Equals(PageType.Delete)
 
 	async Task OnClick(RTClickModel model)
 	{
-		/**holding the selected film-genre connection to delete**/
-		var Filmgenres = await AdminService.GetAsync<ViewFilmGenresDTO>($"filmgenres");
-		Filmgenres = Filmgenres.Where(c => c.FilmId.Equals(model.FilmId) && c.GenreId.Equals(model.SecondId)).ToList();
-		Filmgenre = Filmgenres.FirstOrDefault();
+		if (model.RTPageType.Equals(RTPageType.Delete))
+		{
+			//First call the Similarfilms as we don't have SingleAsync
+			foreach (var similarity in Model)
+			{
+				if (similarity.FilmId.Equals(model.FilmId) && similarity.GenreId.Equals(model.SecondId))
+				{
+					FilmGenre = similarity;
+				}
+			}
+		}
+
 		ChangeRTPageType(model.RTPageType);
+
 	}
 
+	//Referenced and invoked from ChangeS.F. Component
 	async Task OnChange(string alert)
 	{
 		try
@@ -66,7 +78,7 @@ else if (Navigation.Equals(PageType.Edit) || (Navigation.Equals(PageType.Delete)
 		}
 		catch
 		{
-			Alert = $"Couldn't create/delete the film-genre connection";
+
 		}
 	}
-}*@
+}
