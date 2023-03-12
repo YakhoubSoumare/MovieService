@@ -1,1 +1,84 @@
-﻿
+﻿@inject IAdminService AdminService
+
+@if (!string.IsNullOrEmpty(Alert))
+{
+	<div class="alert alert-danger alert-dismissible fade show w-25" role="alert">
+		<strong>couldn't create/delete similarity.</strong>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="CloseAlert" aria-label="Close"></button>
+	</div>
+}
+
+@if (Navigation.Equals(RTPageType.Create))
+{
+	<ChangeSimilarFilm RTPage="@Navigation" OnChange="OnChange"></ChangeSimilarFilm>
+}
+else if (Navigation.Equals(RTPageType.Delete))
+{
+	<ChangeSimilarFilm RTPage="@Navigation" Model="@SimilarFilm" OnChange="OnChange"></ChangeSimilarFilm>
+}
+
+<div class="d-flex me-1">
+	<a class="btn btn-outline-secondary me-1" href="/" role="button">Home</a>
+	<button type="button" class="btn btn-outline-primary me-1" @onclick="()=>ChangeRTPageType(RTPageType.Index)">Index</button>
+	<button type="button" class="btn btn-outline-success" @onclick="()=>ChangeRTPageType(RTPageType.Create)">Create</button>
+</div>
+
+<SimilarFilmsIndex OnClick="OnClick" Model="Model"></SimilarFilmsIndex>
+
+@code{
+	public string Alert { get; set; } = string.Empty;
+	public string Navigation { get; set; } = RTPageType.Index;
+	public List<ViewSimilarFilmDTO> Model { get; set; } = new();
+
+	// passed-in to ChangeS.F. component and stored in its Model
+	public ViewSimilarFilmDTO SimilarFilm { get; set; } = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		Alert = string.Empty;
+		Model = await AdminService.GetAsync<ViewSimilarFilmDTO>($"similarfilms");
+	}
+
+	void ChangeRTPageType(string rtPageType)
+	{
+		Navigation = rtPageType;
+	}
+
+	void CloseAlert()
+	{
+		Alert = string.Empty;
+	}
+
+	async Task OnClick(RTClickModel model)
+	{
+		if (model.RTPageType.Equals(RTPageType.Delete))
+		{
+			//First call the Similarfilms as we don't have SingleAsync
+			foreach (var similarity in Model)
+			{
+				if (similarity.FilmId.Equals(model.FilmId) && similarity.SimilarFilmId.Equals(model.SecondId))
+				{
+					SimilarFilm = similarity;
+				}
+			}
+		}
+		
+		ChangeRTPageType(model.RTPageType);
+
+	}
+
+	//Referenced and invoked from ChangeS.F. Component
+	async Task OnChange(string alert)
+	{
+		try
+		{
+			Alert = alert;
+			Model = await AdminService.GetAsync<ViewSimilarFilmDTO>($"similarfilms");
+			ChangeRTPageType(RTPageType.Index);
+		}
+		catch
+		{
+			
+		}
+	}
+}

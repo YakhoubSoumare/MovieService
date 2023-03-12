@@ -1,1 +1,77 @@
-﻿
+﻿@inject IAdminService AdminService
+
+<EditForm Model="Model" OnValidSubmit="OnFormSubmit">
+	<h4>@RTPage Similar-Films</h4>
+
+	<div class="mb-3">
+		@if (RTPage.Equals(RTPageType.Delete))
+		{
+			<div class="mb-2">
+				<input type="text" id="title1" class="form-control" disabled placeholder="@Model.FilmTitle" @bind-value="Model.FilmTitle">
+				<input type="text" id="title2" class="form-control" disabled placeholder="@Model.SimilarTitle" @bind-value="Model.SimilarTitle">
+			</div>
+		}
+		else if (RTPage.Equals(RTPageType.Create))
+		{
+			<InputSelect @bind-Value="Model.FilmId" class="form-control mb-3">
+				<option value=0>Film ...</option>
+				@foreach (var film in Films)
+				{
+					<option value="@film.Id">@film.Title</option>
+				}
+			</InputSelect>
+			<InputSelect @bind-Value="Model.SimilarFilmId" class="form-control mb-3">
+				<option value=0>Similar Film ...</option>
+				@foreach (var film in Films)
+				{
+					<option value="@film.Id">@film.Title</option>
+				}
+			</InputSelect>
+		}
+		<div class="d-flex justify-content-center">
+			<input class="btn btn-@(RTPage.Equals(RTPageType.Delete) ? "danger" : "primary")" type="submit" value="@RTPage">
+		</div>
+	</div>
+
+</EditForm>
+
+@code{
+	//data passed in from S.F.Portal Component
+	[Parameter] public ViewSimilarFilmDTO Model { get; set; } = new();
+
+	//Keeps track of Create or Delete PageType passed in from S.F.Portal Component
+	[Parameter] public string RTPage { get; set; } = string.Empty;
+
+	//Connect to method in S.F.Portal Component
+	[Parameter] public EventCallback<string> OnChange { get; set; }
+
+	List<BaseFilmDTO> Films { get; set; } = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		Films = await AdminService.GetAsync<BaseFilmDTO>($"films");
+	}
+
+	async Task OnFormSubmit()
+	{
+		try
+		{
+			if (RTPage.Equals(RTPageType.Create))
+			{
+				var film = new BaseSimilarFilmDTO {FilmId = Model.FilmId, 
+					SimilarFilmId = Model.SimilarFilmId};
+
+				await AdminService.CreateAsync<BaseSimilarFilmDTO>($"similarfilms", film);
+			}
+			else if (RTPage.Equals(RTPageType.Delete))
+			{
+				await AdminService.DeleteRefTable($"films/{Model.FilmId}/similar/{Model.SimilarFilmId}");
+			}
+			await OnChange.InvokeAsync("");
+		}
+		catch
+		{
+			await OnChange.InvokeAsync("Couldn't create/delete the similarity.");
+		}
+	}
+}
